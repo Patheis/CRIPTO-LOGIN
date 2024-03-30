@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Welcome</title>
+<title>Parabenes pelo o acesso</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,10 +16,28 @@
     <!-- Adicione aqui os elementos do dashboard, como gráficos, estatísticas, etc. -->
   </div>
   <button onclick="logout()">Sair</button>
-  <ul id="user-list"></ul>
+
+  <P> <button id="adminModal" class="lista-button">Exibir Relatório de Usuários</button> </P>  
+  
 
 </div>
 
-<script src="script.js"></script>
+
+
+<!-- Modal de Solicitação de Senha de Administrador -->
+<div id="adminSenhaModal" class="modal_admin">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Senha do Administrador</h2>
+    <form id="admin-password-form">
+      <label for="admin-password">Senha do Administrador:</label>
+      <input type="password" id="admin-password" name="admin-password" required>
+      <button type="submit" class="submit-button">Confirmar</button>
+    </form>
+  </div>
+</div>
+
+<script src="js/script-welcome.js" defer></script>
+
 </body>
 </html>
