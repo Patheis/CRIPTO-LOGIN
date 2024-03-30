@@ -1,14 +1,11 @@
+//modal-cadastra
 var modal = document.getElementById("myModal");
 var btn = document.getElementById("openModalButton");
 var span = document.getElementsByClassName("close")[0];
+
+
+
 var users = []; // Array para armazenar os usuários cadastrados
-
-
-function logout() {
-  localStorage.removeItem('loggedIn'); // Remove a marcação de login
-  window.location.href = 'index.html'; // Redireciona para a página de login
-}
-
 
 btn.onclick = function() {
   modal.style.display = "block";
@@ -36,7 +33,7 @@ document.getElementById("signup-form").addEventListener("submit", function(event
   });
 
   if (userExists) {
-    console.log("Erro: Usuário já existe!");
+    alert("Erro: Usuário já existe!");
     // Adicione aqui o código para exibir uma mensagem de erro ao usuário
     return;
   }
@@ -48,6 +45,11 @@ document.getElementById("signup-form").addEventListener("submit", function(event
   console.log("Username:", username);
   console.log("Password:", password);
   
+   // Limpar os campos de entrada
+   document.getElementById("new-username").value = "";
+   document.getElementById("new-password").value = "";
+
+
   modal.style.display = "none";
 });
 
@@ -75,21 +77,6 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
     document.getElementById('message').innerHTML = '<div id="error-message">Usuário incorreto ou senha incorreta</div>';
   }
 });
-// Após a declaração do array de usuários
-var userListContainer = document.getElementById("user-list");
 
-// Função para exibir todos os usuários cadastrados
-function displayUsers() {
-  // Limpar conteúdo anterior, se houver
-  userListContainer.innerHTML = '';
 
-  // Iterar sobre todos os usuários e exibir detalhes
-  users.forEach(function(user, index) {
-    var userListItem = document.createElement("li");
-    userListItem.textContent = "Usuário " + (index + 1) + ": " + user.username;
-    userListContainer.appendChild(userListItem);
-  });
-}
 
-// Chame a função para exibir os usuários ao carregar a página
-displayUsers();

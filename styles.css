@@ -79,6 +79,22 @@ button {
   background-color: #218838; 
 }
 
+.lista-button {
+  padding: 10px 20px;
+  background-color: #661010; 
+  color: #fff; 
+  border: none;
+
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.lista-button:hover {
+  background-color: #420404; 
+}
+
+
 .esqueceu-button {
   padding: 10px 20px;
   background-color: #5900e7; 
@@ -110,7 +126,61 @@ button:hover {
   text-align: center;
 }
 
-/* Estilos do Modal */
+/* Estilos do Modal ADMIN */
+#adminSenhaModal {
+  display: none; 
+  position: fixed; 
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%;
+  overflow: auto; 
+  background-color: rgba(0,0,0,0.4); 
+}
+
+#adminSenhaModal .modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* Centraliza verticalmente */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 70%; /* Defina a largura do modal como 70% da largura da tela */
+  max-width: 400px; /* Defina a largura máxima do modal */
+  text-align: center; /* Centraliza o conteúdo horizontalmente */
+}
+
+#adminSenhaModal .modal-content label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+#adminSenhaModal .modal-content input {
+  width: calc(100% - 20px); /* Ajusta a largura do input */
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+#adminSenhaModal .modal-content button {
+  max-width: 200px; /* Defina a largura máxima desejada para o botão */
+  margin-top: 10px;
+}
+
+#adminSenhaModal .close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+#adminSenhaModal .close:hover,
+#adminSenhaModal .close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+
 /* Estilos do Modal */
 .modal {
   display: none; 
