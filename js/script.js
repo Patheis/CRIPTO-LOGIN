@@ -26,6 +26,10 @@ document.getElementById("signup-form").addEventListener("submit", function(event
 
   var username = document.getElementById('new-username').value;
   var password = document.getElementById('new-password').value;
+  var password2 = document.getElementById('new-password2').value;
+  var frase_apoio = document.getElementById('frase_apoio').value;
+  var frase_resposta = document.getElementById('frase_resposta').value;
+
 
   // Verificar se o usuário já existe
   var userExists = users.some(function(user) {
@@ -44,10 +48,17 @@ document.getElementById("signup-form").addEventListener("submit", function(event
   console.log("Novo Usuário:");
   console.log("Username:", username);
   console.log("Password:", password);
-  
+  console.log("Password2:", password2);
+  console.log("Sentece:", frase_apoio);
+  console.log("Answer:", frase_resposta);
+
+
    // Limpar os campos de entrada
    document.getElementById("new-username").value = "";
    document.getElementById("new-password").value = "";
+   document.getElementById("new-password2").value = "";
+   document.getElementById("frase_apoio").value = "";
+   document.getElementById("frase_resposta").value = "";
 
 
   modal.style.display = "none";
