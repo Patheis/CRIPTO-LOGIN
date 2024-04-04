@@ -3,31 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Parabenes pelo o acesso</title>
+<title>Parabéns pelo acesso</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div class="welcome-container">
-  <h2>Bem vindo <span id="username"></span>!!</h2>
-  <p>Voce acessou com sucesso o sistema</p>
+  <h2>Bem-vindo <span id="username"></span>!!</h2>
+  <p>Você acessou com sucesso o sistema</p>
   <div class="dashboard">
-    <h3> Trabalho de Seguranca da Informacao</h3>
-    <h3> Com criptografia simples para login</h3>
+    <h3>Trabalho de Segurança da Informação</h3>
+    <h3>Com criptografia simples para login</h3>
     <!-- Adicione aqui os elementos do dashboard, como gráficos, estatísticas, etc. -->
   </div>
   <button onclick="logout()">Sair</button>
-
-  <P> <button id="adminModal" class="lista-button">Exibir Relatório de Usuários</button> </P>  
-  
-
+  <p><button id="adminModal" class="lista-button">Limpar usuários</button></p>
 </div>
 
-
-
 <!-- Modal de Solicitação de Senha de Administrador -->
-<div id="adminSenhaModal" class="modal_admin">
+<div id="adminSenhaModal" class="modal_admin" style="display: none;">
   <div class="modal-content">
-    <span class="close">&times;</span>
+    <span class="close" id="closeAdminModal">&times;</span>
     <h2>Senha do Administrador</h2>
     <form id="admin-password-form">
       <label for="admin-password">Senha do Administrador:</label>
@@ -38,6 +33,5 @@
 </div>
 
 <script src="js/script-welcome.js" defer></script>
-
 </body>
 </html>
