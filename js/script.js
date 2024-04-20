@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function() {
           user.password = senhaCriptografada;
           var users = JSON.parse(localStorage.getItem('users'));
           var index = users.findIndex(u => u.username === user.username);
-          users[index] = user;
+          users[htmlindex] = user;
           localStorage.setItem('users', JSON.stringify(users));
           console.log("Nova senha criptografada: ", senhaCriptografada);
           alert("Senha atualizada com sucesso! \n Pressione F5 e tente fazer o acesso ao sistema!");
