@@ -44,6 +44,7 @@ document.getElementById("signup-form").addEventListener("submit", async function
   var password2 = document.getElementById('new-password2').value;
   var frase_apoio = document.getElementById('frase_apoio').value;
   var frase_resposta = document.getElementById('frase_resposta').value;
+  var email = document.getElementById('email').value;
 
   // Verificar se as senhas coincidem
   if (password !== password2) {
@@ -67,7 +68,7 @@ document.getElementById("signup-form").addEventListener("submit", async function
   var hashedfraseresposta = await sha256(frase_resposta);
 
   // Adicionar novo usuário ao array de usuários
-  users.push({ username: username, password: hashedPassword, frase_apoio: frase_apoio, frase_resposta: hashedfraseresposta });
+  users.push({ username: username, password: hashedPassword, frase_apoio: frase_apoio, frase_resposta: frase_resposta, email: email });
 
   // Salvar os usuários no localStorage
   localStorage.setItem('users', JSON.stringify(users));
@@ -75,8 +76,10 @@ document.getElementById("signup-form").addEventListener("submit", async function
   console.log("Novo Usuário:");
   console.log("Username:", username);
   console.log("Password:", hashedPassword);
+  //so no console aparece
   console.log("Sentece:", hashedfrase);
   console.log("Answer:", hashedfraseresposta);
+  console.log("Answer:", email);
 
   // Limpar os campos de entrada
   document.getElementById("new-username").value = "";
@@ -138,18 +141,20 @@ function incrementAttempts() {
   localStorage.setItem('loginAttempts', attempts);
 }
 
+
 document.addEventListener('DOMContentLoaded', function() {
   // Seleciona o botão "Esqueceu a senha?"
   var esqueceuSenhaBtn = document.querySelector('.esqueceu-button');
-  
+
   // Seleciona o modal customizado
   var modal = document.getElementById("customModal");
-  
+
   // Seleciona o botão de fechar do modal customizado
   var closeBtn = document.querySelector('.close2');
 
-  // Seleciona a label da frase de apoio
+  // Seleciona a label da frase de apoio e a label de email mascarado
   var fraseLabel = document.getElementById("fraseLabel");
+  var emailLabel = document.getElementById("emailLabel");
 
   // Seleciona o campo de entrada do nome de usuário
   var usernameField = document.getElementById("username");
@@ -157,70 +162,74 @@ document.addEventListener('DOMContentLoaded', function() {
   // Declara a variável user
   var user;
 
+  // Função para mascarar o email
+  function maskEmail(email) {
+    var parts = email.split('@');
+    var localPart = parts[0];
+    var maskedLocal = localPart[0] + '*'.repeat(Math.max(0, localPart.length - 2)) + (localPart.length > 1 ? localPart[localPart.length - 1] : '');
+    return maskedLocal + '@' + parts[1];
+  }
+
+  // Função para validar a senha forte
+  function isPasswordStrong(password) {
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(password);
+  }
+
   // Quando o botão "Esqueceu a senha?" é clicado
   esqueceuSenhaBtn.addEventListener('click', function() {
-    // Obtém o valor do campo de entrada do nome de usuário
     var username = usernameField.value;
-
-    // Verifica se o campo de entrada do nome de usuário está vazio
     if (username.trim() === "") {
       alert("Por favor, digite seu nome de usuário antes de prosseguir.");
       return;
     }
-
-    // Obtém os usuários armazenados no localStorage
     var users = JSON.parse(localStorage.getItem('users')) || [];
-
-    // Busca o usuário correspondente ao nome de usuário fornecido
-    user = users.find(function(user) {
-      return user.username === username;
-    });
-
-    // Verifica se o usuário foi encontrado
+    user = users.find(user => user.username === username);
     if (!user) {
       alert("Usuário não encontrado. Por favor, verifique o nome de usuário e tente novamente.");
       return;
     }
-
-    // Exibe a frase de apoio no modal customizado
     fraseLabel.textContent = "Frase de apoio: " + user.frase_apoio;
-
-    // Abre o modal customizado
+    emailLabel.textContent = "Email mascarado: " + maskEmail(user.email);
     modal.style.display = "block";
   });
 
   // Quando o botão de confirmação é clicado
   document.getElementById("confirmar").addEventListener('click', async function() {
-    // Verifica se a variável user está definida
     if (!user) {
       alert("Por favor, clique no botão 'Esqueceu a senha?' e forneça um nome de usuário válido.");
       return;
     }
-
-    // Obtém a resposta fornecida pelo usuário
     var respostaFornecida = document.getElementById("respostaFrase").value;
 
-    console.log("Resposta fornecida pelo usuário:", respostaFornecida);
-
-    // Descriptografa a resposta cadastrada
-    var respostaCadastrada = await descriptografar(user.frase_resposta);
-
-    console.log("Resposta cadastrada descriptografada:", respostaCadastrada);
-
-    // Verifica se a resposta fornecida corresponde à resposta cadastrada
-    if (respostaFornecida === respostaCadastrada) {
-      // Se a resposta estiver correta, você pode permitir que o usuário redefina a senha aqui
-      alert("Resposta correta! Agora você pode redefinir sua senha.");
-      // Aqui você pode adicionar a lógica para redefinir a senha
+    if (respostaFornecida === user.frase_resposta) {
+      var novaSenha;
+      do {
+        novaSenha = prompt("Digite sua nova senha (deve ter pelo menos 8 caracteres, incluir letras maiúsculas, minúsculas e números):");
+        if (novaSenha && isPasswordStrong(novaSenha)) {
+          var senhaCriptografada = await sha256(novaSenha);
+          user.password = senhaCriptografada;
+          var users = JSON.parse(localStorage.getItem('users'));
+          var index = users.findIndex(u => u.username === user.username);
+          users[index] = user;
+          localStorage.setItem('users', JSON.stringify(users));
+          console.log("Nova senha criptografada: ", senhaCriptografada);
+          alert("Senha atualizada com sucesso! \n Pressione F5 e tente fazer o acesso ao sistema!");
+          modal.style.display = "none";
+          break;
+        } else if (!novaSenha) {
+          alert("Atualização de senha cancelada.");
+          break;
+        } else {
+          alert("A senha não atende aos requisitos mínimos de segurança.");
+        }
+      } while (true);
     } else {
-      // Se a resposta estiver incorreta
       alert("Resposta incorreta. Por favor, tente novamente.");
     }
   });
 
   // Quando o botão de fechar do modal customizado é clicado
   closeBtn.addEventListener('click', function() {
-    // Fecha o modal customizado
     modal.style.display = "none";
   });
 
@@ -231,55 +240,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-// Função para descriptografar a resposta cadastrada
-async function descriptografar(respostaCifrada) {
-  try {
-    // Decodifica a resposta cifrada de base64 para bytes
-    var cifraBytes = Uint8Array.from(atob(respostaCifrada), c => c.charCodeAt(0));
 
-    // Extrai o IV (Initialization Vector) dos primeiros 12 bytes
-    var iv = cifraBytes.slice(0, 12);
 
-    // Extrai o ciphertext (dados cifrados) do restante dos bytes
-    var ciphertext = cifraBytes.slice(12);
 
-    // Chave de criptografia
-    var chave = "chave_de_criptografia";
 
-    // Converte a chave para bytes usando UTF-8
-    var chaveBytes = new TextEncoder().encode(chave);
-
-    // Verifica se a chave tem 128 ou 256 bits
-    if (chaveBytes.length !== 16 && chaveBytes.length !== 32) {
-      console.error('A chave deve ter 128 ou 256 bits.');
-      return null;
-    }
-
-    // Importa a chave para uso de descriptografia
-    var cryptoKey = await crypto.subtle.importKey(
-      "raw", // O tipo de chave é "raw"
-      chaveBytes, // A chave de criptografia em bytes
-      { name: "AES-GCM", length: 256 }, // Especificações da chave AES
-      false, // Não extrair a chave para uso de descriptografia
-      ["decrypt"] // Permissões para a chave (apenas para descriptografar)
-    );
-
-    // Descriptografa os dados
-    var respostaArrayBuffer = await crypto.subtle.decrypt(
-      { name: "AES-GCM", iv: iv }, // Parâmetros de descriptografia
-      cryptoKey, // A chave de descriptografia
-      ciphertext // O texto cifrado
-    );
-
-    // Converte o ArrayBuffer da resposta para uma string
-    var respostaDescriptografada = new TextDecoder().decode(respostaArrayBuffer);
-
-    return respostaDescriptografada;
-  } catch (error) {
-    console.error('Erro ao descriptografar a resposta:', error);
-    return null;
-  }
-}
-  // Restante do código...
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -29,11 +29,11 @@
 
     <p> <button id="openModalButton" class="cadastrar-button"> Cadastrar </button> </p>
  
-<<<<<<< HEAD
+
     <p> <button type="submit-esqueceu" class="esqueceu-button"> Esqueceu a senha? </button></p>
-=======
-    <p> <button type="submit-esqueceu" class="esqueceu-button" onclick="openResetPasswordPage()"> Esqueceu a senha? </button></p>
->>>>>>> a7bbcf5 (Finalizando...)
+
+    
+
    
    
     
@@ -50,18 +50,16 @@
     
     
     <label for="frase" id="fraseLabel"></label><br>
-  
+    <label for="frase" id="emailLabel"></label><br>
     
     <!-- Campo para a resposta da frase de apoio -->
     <label for="respostaFrase">Resposta da frase de apoio:</label><br>
     <input type="text" id="respostaFrase" name="respostaFrase" autocomplete="off" required><br>
 
-    <!-- Campos para a nova senha -->
-    <label for="nova-senha">Nova Senha:</label><br>
-    <input type="password" id="nova-senha" name="nova-senha" required><br>
+    <!-- Campo para a resposta para completar email -->
+    <label for="respostaEmail">Complete o email:</label><br>
+    <input type="email" id="respostaEmail" name="respostaEmail" autocomplete="off" required><br>
 
-    <label for="confirma-senha">Confirme a Nova Senha:</label><br>
-    <input type="password" id="confirma-senha" name="confirma-senha" required><br>
 
     <!-- Botão de confirmação -->
     <button id="confirmar">Confirmar</button>
@@ -93,11 +91,13 @@
 
       <P> <input type="text" id="frase_apoio" name="frase_apoio" autocomplete="off" required> </p> 
      
-      <P><label for="frase_resposta">Resposta da frase de apoio</label></P>
+      <P><label for="frase_resposta">Resposta da frase de apoio:</label></P>
 
       <P> <input type="password" id="frase_resposta" name="frase_resposta" autocomplete="off" required> </p>  
 
+      <P><label for="frase_resposta">Email:</label></P>
 
+      <P> <input type="email" id="email" name="email" autocomplete="off" required> </p>  
 
       <button type="submit" class="submit-button">Cadastrar</button>
       
